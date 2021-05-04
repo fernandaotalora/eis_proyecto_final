@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vacunas/page/home.dart';
 
 void main() {
   runApp(MyApp());
