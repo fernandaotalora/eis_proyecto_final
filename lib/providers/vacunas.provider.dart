@@ -1,13 +1,19 @@
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
+import 'package:vacunas/models/vacuna.models.dart';
 
 class VacunaProvider {
-  getVacunas() async {
-    Map<String, String> queryParameters = {
-      '$select':
+  Future<List<Vacuna>> getVacunas() async {
+    List<Vacuna> listVacunas = [];
+    /*Map<String, String> queryParameters = {
+      r'$select':
           'a_o, cod_territorio,nom_territorio,laboratorio_vacuna,sum(cantidad),uso_vacuna,fecha_corte',
-      '$group':
+      r'$group':
           '_o, cod_territorio,nom_territorio,laboratorio_vacuna,uso_vacuna,fecha_corte'
+    };*/
+
+    Map<String, String> queryParameters = {
+      'fecha_corte': '2021-04-29T00:00:00.000'
     };
 
     var url = Uri.https(
@@ -16,8 +22,8 @@ class VacunaProvider {
     var response = await http.get(url);
     if (response.statusCode == 200) {
       var jsonResponse = convert.jsonDecode(response.body) as List<dynamic>;
-
-      print(jsonResponse);
+      jsonResponse.forEach((item) => {listVacunas.add(Vacuna.fromJson(item))});
     }
+    return listVacunas;
   }
 }
