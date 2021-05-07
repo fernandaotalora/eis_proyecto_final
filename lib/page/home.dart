@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vacunas/models/resvacuna.models.dart';
 import 'package:vacunas/models/vacuna.models.dart';
 import 'package:vacunas/providers/vacunas.provider.dart';
+import 'package:vacunas/widget/card.widget.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -10,9 +11,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final VacunaProvider vacunaProvider = VacunaProvider();
-  List<ResVacuna> resumen = [];
   Future<List<Vacuna>> listVacunas;
-  List<String> departamentos;
 
   @override
   void initState() {
@@ -24,7 +23,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Home"),
+        title: Text("Vacuna COVID"),
       ),
       body: _body(),
     );
@@ -38,6 +37,8 @@ class _HomePageState extends State<HomePage> {
           if (snapshot.hasData) {
             final datos = snapshot.data;
             List<String> listaTemporal = [];
+            List<CardWidget> departamentos = [];
+
             datos.forEach((element) {
               if (!listaTemporal.contains(element.nomTerritorio))
                 listaTemporal.add(element.nomTerritorio);
@@ -50,13 +51,21 @@ class _HomePageState extends State<HomePage> {
                   aux += int.parse(element.cantidad);
                 }
               });
-              resumen
-                  .add(ResVacuna(nomTerritorio: e, cantidad: aux.toString()));
+
+              departamentos.add(CardWidget(
+                  resumen:
+                      ResVacuna(nomTerritorio: e, cantidad: aux.toString())));
               aux = 0;
             }
-            return GridView(
-              children: [Text("Prueba")],
-            );
+            return ListView(children: departamentos);
+            /*GridView.count(
+              primary: false,
+              padding: const EdgeInsets.all(8),
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+              crossAxisCount: 2,
+              children: departamentos,
+            );*/
           } else {
             return Center(
               child: CircularProgressIndicator(),

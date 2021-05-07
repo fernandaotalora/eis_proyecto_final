@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:vacunas/models/resvacuna.models.dart';
 
+import 'chart_vacuna.dart';
+
 class CardWidget extends StatelessWidget {
   final ResVacuna resumen;
-
   CardWidget({@required this.resumen});
 
   @override
@@ -16,38 +17,54 @@ class CardWidget extends StatelessWidget {
           children: [
             ListTile(
               leading: Icon(Icons.arrow_drop_down_circle),
-              title: Text(resumen.nomTerritorio),
+              title: Text(
+                resumen.nomTerritorio,
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
               subtitle: Text(
-                'Vacunas asignadas',
+                'Cantidad vacunas asignadas',
                 style: TextStyle(color: Colors.black.withOpacity(0.6)),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(8.0),
               child: Text(
-                'Cantidad: ' + resumen.cantidad,
-                style: TextStyle(color: Colors.black.withOpacity(0.6)),
+                resumen.cantidad,
+                style: TextStyle(
+                    color: Colors.black.withOpacity(0.6),
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold),
               ),
             ),
             ButtonBar(
               alignment: MainAxisAlignment.start,
               children: [
-                ElevatedButton(
+                TextButton(
                   onPressed: () {
-                    // Perform some action
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => SimpleBarChart([])));
                   },
-                  child: Icon(Icons.access_alarm),
+                  child: Center(
+                      child: Icon(
+                    Icons.coronavirus,
+                    color: Colors.orangeAccent,
+                    size: 40,
+                  )),
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    // Perform some action
-                  },
-                  child: Icon(Icons.access_alarms_sharp),
+                TextButton(
+                  onPressed: () {},
+                  child: Center(
+                      child: Icon(
+                    Icons.group,
+                    color: Colors.orangeAccent,
+                    size: 40,
+                  )),
                 ),
               ],
             ),
-            Image.asset('assets/coronavirus.png'),
-            Image.asset('assets/vacuna.png'),
+            Image.asset('assets/coronavirus.jpg'),
           ],
         ),
       ),
