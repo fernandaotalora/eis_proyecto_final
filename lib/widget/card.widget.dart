@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:vacunas/models/resvacuna.models.dart';
+import 'package:vacunas/models/vacuna.models.dart';
 
 import 'chart_vacuna.dart';
 
 class CardWidget extends StatelessWidget {
   final ResVacuna resumen;
-  CardWidget({@required this.resumen});
+  final List<Vacuna> datos;
+
+  CardWidget({@required this.resumen, this.datos});
 
   @override
   Widget build(BuildContext context) {
@@ -41,10 +44,11 @@ class CardWidget extends StatelessWidget {
               children: [
                 TextButton(
                   onPressed: () {
+                    _crearData();
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => SimpleBarChart([])));
+                            builder: (context) => SubscriberChart()));
                   },
                   child: Center(
                       child: Icon(
@@ -69,5 +73,14 @@ class CardWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  _crearData() {
+    var fruits = ['apples', 'oranges', 'bananas'];
+    fruits.where((f) => f.startsWith('a')).toList(); //apples
+
+    List<Vacuna> departamento = datos
+        .where((item) => item.nomTerritorio.contains(resumen.nomTerritorio))
+        .toList();
   }
 }

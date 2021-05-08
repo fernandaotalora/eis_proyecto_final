@@ -54,7 +54,8 @@ class _HomePageState extends State<HomePage> {
 
               departamentos.add(CardWidget(
                   resumen:
-                      ResVacuna(nomTerritorio: e, cantidad: aux.toString())));
+                      ResVacuna(nomTerritorio: e, cantidad: aux.toString()),
+                  datos: datos));
               aux = 0;
             }
             return ListView(children: departamentos);

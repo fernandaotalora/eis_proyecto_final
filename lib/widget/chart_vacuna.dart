@@ -1,54 +1,83 @@
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
+import 'package:vacunas/models/subscriber_series.dart';
 
-class SimpleBarChart extends StatelessWidget {
-  final List<charts.Series> seriesList;
-  final bool animate;
+class SubscriberChart extends StatelessWidget {
+  final List<SubscriberSeries> data = [
+    SubscriberSeries(
+      year: "2008",
+      subscribers: 10000000,
+      barColor: charts.ColorUtil.fromDartColor(Colors.blue),
+    ),
+    SubscriberSeries(
+      year: "2009",
+      subscribers: 11000000,
+      barColor: charts.ColorUtil.fromDartColor(Colors.blue),
+    ),
+    SubscriberSeries(
+      year: "2010",
+      subscribers: 12000000,
+      barColor: charts.ColorUtil.fromDartColor(Colors.blue),
+    ),
+    SubscriberSeries(
+      year: "2011",
+      subscribers: 10000000,
+      barColor: charts.ColorUtil.fromDartColor(Colors.blue),
+    ),
+    SubscriberSeries(
+      year: "2012",
+      subscribers: 8500000,
+      barColor: charts.ColorUtil.fromDartColor(Colors.blue),
+    ),
+    SubscriberSeries(
+      year: "2013",
+      subscribers: 7700000,
+      barColor: charts.ColorUtil.fromDartColor(Colors.blue),
+    ),
+    SubscriberSeries(
+      year: "2014",
+      subscribers: 7600000,
+      barColor: charts.ColorUtil.fromDartColor(Colors.blue),
+    ),
+    SubscriberSeries(
+      year: "2015",
+      subscribers: 5500000,
+      barColor: charts.ColorUtil.fromDartColor(Colors.red),
+    ),
+  ];
 
-  SimpleBarChart(this.seriesList, {this.animate});
-
-  /// Creates a [BarChart] with sample data and no transition.
-  factory SimpleBarChart.withSampleData() {
-    return new SimpleBarChart(
-      _createSampleData(),
-      // Disable animations for image tests.
-      animate: false,
-    );
-  }
+  SubscriberChart();
 
   @override
   Widget build(BuildContext context) {
-    return new charts.BarChart(
-      seriesList,
-      animate: animate,
+    List<charts.Series<SubscriberSeries, String>> series = [
+      charts.Series(
+          id: "Subscribers",
+          data: data,
+          domainFn: (SubscriberSeries series, _) => series.year,
+          measureFn: (SubscriberSeries series, _) => series.subscribers,
+          colorFn: (SubscriberSeries series, _) => series.barColor)
+    ];
+
+    return Container(
+      height: 400,
+      padding: EdgeInsets.all(20),
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: <Widget>[
+              Text(
+                "World of Warcraft Subscribers by Year",
+                style: Theme.of(context).textTheme.body2,
+              ),
+              Expanded(
+                child: charts.BarChart(series, animate: true),
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
-
-  /// Create one series with sample hard coded data.
-  static List<charts.Series<OrdinalSales, String>> _createSampleData() {
-    final data = [
-      new OrdinalSales('2014', 5),
-      new OrdinalSales('2015', 25),
-      new OrdinalSales('2016', 100),
-      new OrdinalSales('2017', 75),
-    ];
-
-    return [
-      new charts.Series<OrdinalSales, String>(
-        id: 'Sales',
-        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
-        data: data,
-      )
-    ];
-  }
-}
-
-/// Sample ordinal data type.
-class OrdinalSales {
-  final String year;
-  final int sales;
-
-  OrdinalSales(this.year, this.sales);
 }
