@@ -1,13 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
-class SubscriberSeries {
-  final String year;
-  final int subscribers;
+class LaboratioSeries {
+  final String laboratorio;
+  final int cantidad;
   final charts.Color barColor;
 
-  SubscriberSeries(
-      {@required this.year,
-      @required this.subscribers,
+  LaboratioSeries(
+      {@required this.laboratorio,
+      @required this.cantidad,
       @required this.barColor});
 }

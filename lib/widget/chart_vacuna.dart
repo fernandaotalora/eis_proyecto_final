@@ -3,60 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:vacunas/models/subscriber_series.dart';
 
 class SubscriberChart extends StatelessWidget {
-  final List<SubscriberSeries> data = [
-    SubscriberSeries(
-      year: "2008",
-      subscribers: 10000000,
-      barColor: charts.ColorUtil.fromDartColor(Colors.blue),
-    ),
-    SubscriberSeries(
-      year: "2009",
-      subscribers: 11000000,
-      barColor: charts.ColorUtil.fromDartColor(Colors.blue),
-    ),
-    SubscriberSeries(
-      year: "2010",
-      subscribers: 12000000,
-      barColor: charts.ColorUtil.fromDartColor(Colors.blue),
-    ),
-    SubscriberSeries(
-      year: "2011",
-      subscribers: 10000000,
-      barColor: charts.ColorUtil.fromDartColor(Colors.blue),
-    ),
-    SubscriberSeries(
-      year: "2012",
-      subscribers: 8500000,
-      barColor: charts.ColorUtil.fromDartColor(Colors.blue),
-    ),
-    SubscriberSeries(
-      year: "2013",
-      subscribers: 7700000,
-      barColor: charts.ColorUtil.fromDartColor(Colors.blue),
-    ),
-    SubscriberSeries(
-      year: "2014",
-      subscribers: 7600000,
-      barColor: charts.ColorUtil.fromDartColor(Colors.blue),
-    ),
-    SubscriberSeries(
-      year: "2015",
-      subscribers: 5500000,
-      barColor: charts.ColorUtil.fromDartColor(Colors.red),
-    ),
-  ];
+  final List<LaboratioSeries> data;
+  final String departamento;
 
-  SubscriberChart();
+  SubscriberChart({@required this.data, this.departamento});
 
   @override
   Widget build(BuildContext context) {
-    List<charts.Series<SubscriberSeries, String>> series = [
+    List<charts.Series<LaboratioSeries, String>> series = [
       charts.Series(
-          id: "Subscribers",
+          id: "Laboratorios",
           data: data,
-          domainFn: (SubscriberSeries series, _) => series.year,
-          measureFn: (SubscriberSeries series, _) => series.subscribers,
-          colorFn: (SubscriberSeries series, _) => series.barColor)
+          domainFn: (LaboratioSeries series, _) => series.laboratorio,
+          measureFn: (LaboratioSeries series, _) => series.cantidad,
+          colorFn: (LaboratioSeries series, _) => series.barColor)
     ];
 
     return Container(
@@ -68,8 +28,9 @@ class SubscriberChart extends StatelessWidget {
           child: Column(
             children: <Widget>[
               Text(
-                "World of Warcraft Subscribers by Year",
-                style: Theme.of(context).textTheme.body2,
+                "Vacunas asignadas por laboratorio para $departamento",
+                style: TextStyle(
+                    color: Colors.redAccent, fontWeight: FontWeight.bold),
               ),
               Expanded(
                 child: charts.BarChart(series, animate: true),

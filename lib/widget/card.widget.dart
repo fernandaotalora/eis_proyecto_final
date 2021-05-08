@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:vacunas/models/resvacuna.models.dart';
+import 'package:vacunas/models/subscriber_series.dart';
 import 'package:vacunas/models/vacuna.models.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
 
 import 'chart_vacuna.dart';
 
 class CardWidget extends StatelessWidget {
   final ResVacuna resumen;
   final List<Vacuna> datos;
-
+  List<LaboratioSeries> dataLaboratorio = [];
   CardWidget({@required this.resumen, this.datos});
 
   @override
@@ -48,7 +50,9 @@ class CardWidget extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => SubscriberChart()));
+                            builder: (context) => SubscriberChart(
+                                data: dataLaboratorio,
+                                departamento: resumen.nomTerritorio)));
                   },
                   child: Center(
                       child: Icon(
@@ -76,11 +80,27 @@ class CardWidget extends StatelessWidget {
   }
 
   _crearData() {
-    var fruits = ['apples', 'oranges', 'bananas'];
-    fruits.where((f) => f.startsWith('a')).toList(); //apples
-
     List<Vacuna> departamento = datos
         .where((item) => item.nomTerritorio.contains(resumen.nomTerritorio))
         .toList();
+
+    List<String> laboratorios = [];
+    departamento.forEach((element) {
+      if (!laboratorios.contains(element.laboratorioVacuna))
+        laboratorios.add(element.laboratorioVacuna);
+    });
+    int aux = 0;
+    for (var i in laboratorios) {
+      departamento.forEach((e) {
+        if (e.laboratorioVacuna == i) {
+          aux += int.parse(e.cantidad);
+        }
+      });
+      dataLaboratorio.add(LaboratioSeries(
+          laboratorio: i,
+          cantidad: aux,
+          barColor: charts.ColorUtil.fromDartColor(Colors.blue)));
+      aux = 0;
+    }
   }
 }
